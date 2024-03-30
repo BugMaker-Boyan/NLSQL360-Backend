@@ -1,0 +1,5 @@
+fastapi
+unicorn
+pydantic
+python-multipart
+tortoise-orm
