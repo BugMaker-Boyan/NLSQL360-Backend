@@ -1,37 +1,58 @@
 from fastapi import APIRouter, Form
-# from pydantic import BaseModel\
-
-
-# class User(BaseModel):
-#     username: str
-#     password: str
+from apps.user.model import User
+from apps.auth.auth_token import get_password_hash, UserObject, UserInDBObject, Depends, get_current_user
+from apps.status import *
+from pydantic import BaseModel
 
 
 user_router = APIRouter()
 
 
-@user_router.get("/info")
-def get_info(username):
-    return {
-        "username": username
-    }
+@user_router.get("/", response_model=UserObject)
+async def get_info(current_user: UserObject = Depends(get_current_user)):
+    user = await User.get(username=current_user.username)
+    return user
 
 
-@user_router.get("/info_with_default")
-def get_info(username="default"):
-    return {
-        "username": username
-    }
+@user_router.post("/")
+async def register(username: str = Form(), 
+                   password: str = Form(),
+                   email: str = Form()):
+    await User.create(
+        username=username,
+        hashed_password=get_password_hash(password),
+        email=email
+    )
+    return SUCCESS_COMPLETE
 
 
-# @user_router.post("/login")
-# def login(user: User):
-#     print(user)
-#     return user
+class LLMAPIConfigObject(BaseModel):
+    llm_api_config_baseurl: str
+    llm_api_config_key: str
 
 
-@user_router.post("/login")
-def login(username: str = Form(), password: str = Form()):
-    return {
-        "username": username
-    }
+@user_router.put("/llm_api_config")
+async def modify_llm_api_config(api_config: LLMAPIConfigObject, current_user: UserObject = Depends(get_current_user)):
+    config_dict = api_config.model_dump()
+    await User.filter(username=current_user.username).update(**config_dict)
+    return SUCCESS_COMPLETE
+
+
+class UserPasswordObject(BaseModel):
+    password: str
+    
+
+@user_router.put("/modify_password")
+async def modify_password(user_password: UserPasswordObject, current_user: UserObject = Depends(get_current_user)):
+    await User.filter(username=current_user.username).update(hashed_password=get_password_hash(user_password.password))
+    return SUCCESS_COMPLETE
+
+
+class UserEmailObject(BaseModel):
+    password: str
+
+
+@user_router.put("/modify_email")
+async def modify_email(user_email: UserEmailObject, current_user: UserObject = Depends(get_current_user)):
+    await User.filter(username=current_user.username).update(email=user_email.email)
+    return SUCCESS_COMPLETE

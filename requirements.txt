@@ -1,5 +1,9 @@
 fastapi
-unicorn
+uvicorn
 pydantic
 python-multipart
 tortoise-orm
+aiomysql
+aerich
+python-jose[cryptography]
+passlib[bcrypt]
