@@ -92,7 +92,7 @@ async def create_dataset(dataset_name: str,
                 detail=f"Dataset {dataset_name} already exists"
             ) from cleanup_error
     
-    base_path = Path(f"data/{current_user.username}/{dataset_name}")
+    base_path = Path(f"user_data/{current_user.username}/{dataset_name}")
     samples_file_path = base_path / samples_json_file.filename
     db_zip_file_path = base_path / db_zip_file.filename
     if tables_json_file:

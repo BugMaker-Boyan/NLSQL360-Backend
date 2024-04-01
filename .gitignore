@@ -1,6 +1,6 @@
 **/__pycache__
 **/test_data
 **/migrations
-**/data
+**/user_data
 dataset_preprocess.py
 prediction_preprocess.py

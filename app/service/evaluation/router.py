@@ -133,13 +133,13 @@ async def run_evaluation(dataset_name: str,
     sorted_gold_samples = sorted(dataset.samples, key=lambda item: item.id)
     sorted_eval_samples = sorted(eval_json, key=lambda item: item["id"])
     if dataset.tables_json_filename:
-        tables_json_path = Path(f"data/{current_user.username}/{dataset_name}/{dataset.tables_json_filename}")
+        tables_json_path = Path(f"user_data/{current_user.username}/{dataset_name}/{dataset.tables_json_filename}")
         async with aiofiles.open(tables_json_path, "r", encoding="utf-8") as fp:
             content = await fp.read()
             tables_json = json.loads(content)
     else:
         tables_json = None
-    db_dir = Path(f"data/{current_user.username}/{dataset_name}/{dataset.db_dirname}").as_posix()
+    db_dir = Path(f"user_data/{current_user.username}/{dataset_name}/{dataset.db_dirname}").as_posix()
     
     eval_results = dict()
     
