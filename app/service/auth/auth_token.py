@@ -6,7 +6,7 @@ from passlib.context import CryptContext
 from typing import Union
 from datetime import datetime, timedelta, timezone
 from typing import Optional
-from apps.user.model import User
+from app.model.models import User
 
 
 SECRET_KEY = "78671c512c4e1a39582bd88bcd287886cf49a8a43c6318d82571a7ee54aec375"
@@ -54,7 +54,6 @@ async def get_user(username: str):
     all_users = await User.all()
     for user in all_users:
         if username == user.username:
-            print(user.username)
             return UserInDBObject(
                 id=user.id,
                 username=user.username,

@@ -17,7 +17,7 @@ TORTIOSE_CONFIG = {
     },
     "apps": {
         "models": {
-            "models": ["apps.user.model", "aerich.models"],
+            "models": ["app.model.models", "aerich.models"],
             "default_connection": "default"
         }
     },

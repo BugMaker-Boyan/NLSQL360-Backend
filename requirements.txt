@@ -7,3 +7,12 @@ aiomysql
 aerich
 python-jose[cryptography]
 passlib[bcrypt]
+sqlglot[rs]
+loguru
+sqlparse
+tqdm
+nltk
+aiofiles
+func_timeout
+numpy
+pandas
